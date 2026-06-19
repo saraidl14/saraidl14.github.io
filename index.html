@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio de Sara Iglesias de Lucas — Full Stack Developer & Game Developer">
+  <title>Sara Iglesias de Lucas — Portfolio</title>
+  <link rel="icon" type="image/png" href="navicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:         #0e1117;
+      --surface:    #161b27;
+      --border:     #242d3e;
+      --accent:     #f97316;
+      --accent-dim: rgba(249,115,22,.12);
+      --text:       #dce3f0;
+      --subtle:     #8897b3;
+      --muted:      #4e5f7a;
+      --font:       'Inter', system-ui, sans-serif;
+      --mono:       'JetBrains Mono', monospace;
+      --r:          8px;
+      --t:          200ms ease;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3 { line-height: 1.2; font-weight: 600; }
+    a { color: var(--accent); text-decoration: none; transition: opacity var(--t); }
+    a:hover { opacity: .8; }
+
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 2rem; }
+    section { padding: 5.5rem 0; }
+
+    .s-label {
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--accent);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
+    .s-title { font-size: clamp(1.75rem, 4vw, 2.4rem); margin-bottom: .75rem; }
+    .s-desc { color: var(--subtle); max-width: 540px; margin-bottom: 2.75rem; line-height: 1.7; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid transparent;
+      transition: background var(--t), border-color var(--t);
+    }
+    nav.scrolled {
+      background: rgba(14,17,23,.92);
+      backdrop-filter: blur(14px);
+      border-bottom-color: var(--border);
+    }
+    nav .container { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .nav-logo { font-family: var(--mono); font-size: 1rem; font-weight: 500; color: var(--text); }
+    .nav-logo span { color: var(--accent); }
+    .nav-right { display: flex; align-items: center; gap: 1.75rem; }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a { font-size: .875rem; color: var(--subtle); transition: color var(--t); }
+    .nav-links a:hover { color: var(--text); opacity: 1; }
+
+    .lang-toggle {
+      font-family: var(--mono);
+      font-size: .75rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: .3rem .8rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      color: var(--muted);
+      white-space: nowrap;
+      transition: border-color var(--t);
+    }
+    .lang-toggle:hover { border-color: var(--accent); }
+    .lang-toggle .active { color: var(--accent); font-weight: 500; }
+    .lang-toggle .sep { color: var(--border); }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: .25rem;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--subtle); border-radius: 2px;
+      transition: all var(--t);
+    }
+
+    .mobile-menu {
+      display: none; position: fixed;
+      top: 60px; left: 0; right: 0;
+      background: rgba(14,17,23,.97);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      z-index: 99;
+      flex-direction: column; gap: .75rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: .95rem; color: var(--subtle); padding: .35rem 0; }
+    .mobile-menu a:hover { color: var(--text); opacity: 1; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding-top: 5rem;
+      position: relative; overflow: hidden;
+    }
+    #hero::before {
+      content: ''; position: absolute; top: -30%; right: -10%;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(249,115,22,.055) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-family: var(--mono); font-size: .875rem; color: var(--accent);
+      margin-bottom: 1rem; display: flex; align-items: center; gap: .6rem;
+    }
+    .hero-eyebrow::before {
+      content: ''; display: inline-block;
+      width: 2rem; height: 1px; background: var(--accent); flex-shrink: 0;
+    }
+    .hero-name {
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 700; letter-spacing: -.03em; line-height: 1.02;
+      margin-bottom: 1rem;
+    }
+    .hero-role {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-weight: 300; color: var(--subtle);
+      margin-bottom: 1.5rem; min-height: 2rem;
+    }
+    .hero-role .typed { color: var(--accent); font-weight: 500; }
+    .cursor {
+      display: inline-block; width: 2px; height: .9em;
+      background: var(--accent); vertical-align: middle; margin-left: 2px;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    .hero-pitch {
+      color: var(--subtle); max-width: 480px;
+      margin-bottom: 2.25rem; font-size: 1.02rem; line-height: 1.75;
+    }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .7rem 1.4rem; border-radius: var(--r);
+      font-size: .9rem; font-weight: 500;
+      cursor: pointer; transition: all var(--t);
+      border: none; text-decoration: none; font-family: var(--font);
+    }
+    .btn-primary { background: var(--accent); color: #0e1117; }
+    .btn-primary:hover { opacity: .9; transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); opacity: 1; }
+
+    /* ── ABOUT ── */
+    #about { border-top: 1px solid var(--border); }
+    .about-grid { display: grid; grid-template-columns: 1fr 270px; gap: 4rem; align-items: start; }
+    .about-text p { color: var(--subtle); margin-bottom: 1.1rem; line-height: 1.75; }
+    .about-text p strong { color: var(--text); font-weight: 500; }
+    .photo-frame {
+      width: 100%; aspect-ratio: 3/4;
+      background: var(--surface); border-radius: 12px;
+      border: 1px solid var(--border); overflow: hidden;
+      position: relative;
+    }
+    .photo-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .photo-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: .5rem; color: var(--muted);
+      font-family: var(--mono); font-size: .78rem;
+    }
+    .photo-placeholder svg { width: 2.5rem; height: 2.5rem; opacity: .3; }
+    .photo-wrap { position: relative; }
+    .photo-accent {
+      position: absolute; inset: -7px -7px 7px 7px;
+      border: 1px solid var(--accent); border-radius: 14px;
+      opacity: .22; pointer-events: none;
+    }
+
+    /* ── SKILLS ── */
+    #skills { border-top: 1px solid var(--border); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1.25rem; }
+    .skill-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.4rem;
+      transition: border-color var(--t);
+    }
+    .skill-card:hover { border-color: rgba(249,115,22,.3); }
+    .skill-card-title {
+      font-family: var(--mono); font-size: .72rem;
+      color: var(--accent); letter-spacing: .08em;
+      text-transform: uppercase; margin-bottom: .9rem;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .tag {
+      background: var(--accent-dim); color: var(--text);
+      font-size: .8rem; padding: .25rem .65rem;
+      border-radius: 100px; border: 1px solid rgba(249,115,22,.18);
+    }
+
+    /* ── PROJECTS ── */
+    #projects { border-top: 1px solid var(--border); }
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px,1fr)); gap: 1.25rem; }
+    .proj-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.6rem;
+      display: flex; flex-direction: column; gap: .65rem;
+      transition: all var(--t); position: relative; overflow: hidden;
+    }
+    .proj-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0; transition: opacity var(--t);
+    }
+    .proj-card:hover { border-color: rgba(249,115,22,.3); transform: translateY(-2px); }
+    .proj-card:hover::before { opacity: 1; }
+    .proj-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    .proj-icon { color: var(--muted); display: flex; align-items: center; }
+    .proj-badge {
+      font-family: var(--mono); font-size: .65rem;
+      background: rgba(249,115,22,.18); color: var(--accent);
+      border: 1px solid rgba(249,115,22,.3);
+      border-radius: 4px; padding: .15rem .5rem;
+    }
+    .proj-ext-link {
+      color: var(--muted); transition: color var(--t);
+      display: flex; align-items: center;
+    }
+    .proj-ext-link:hover { color: var(--accent); opacity: 1; }
+    .proj-title { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+    .proj-desc { font-size: .875rem; color: var(--subtle); line-height: 1.65; flex: 1; }
+    .proj-tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .2rem; }
+    .proj-tag {
+      font-family: var(--mono); font-size: .7rem; color: var(--accent);
+      background: var(--accent-dim); padding: .18rem .55rem; border-radius: 4px;
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience { border-top: 1px solid var(--border); }
+    .exp-list { display: flex; flex-direction: column; }
+    .exp-item {
+      display: grid; grid-template-columns: 170px 1fr;
+      gap: 0 2rem; padding: 1.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .exp-item:last-child { border-bottom: none; }
+    .exp-date { font-family: var(--mono); font-size: .74rem; color: var(--muted); padding-top: .15rem; line-height: 1.5; }
+    .exp-role { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: .15rem; }
+    .exp-company { font-size: .875rem; color: var(--accent); margin-bottom: .5rem; }
+    .exp-bullets { list-style: none; }
+    .exp-bullets li {
+      font-size: .875rem; color: var(--subtle);
+      line-height: 1.65; padding-left: 1rem;
+      position: relative; margin-bottom: .2rem;
+    }
+    .exp-bullets li::before { content: '–'; position: absolute; left: 0; color: var(--accent); }
+
+    /* ── CERTIFICATIONS ── */
+    #certifications { border-top: 1px solid var(--border); }
+    .certs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 1rem; }
+    .cert-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.1rem 1.25rem;
+      display: flex; flex-direction: column; gap: .3rem;
+      transition: border-color var(--t);
+    }
+    .cert-card:hover { border-color: rgba(249,115,22,.3); }
+    .cert-issuer { font-family: var(--mono); font-size: .67rem; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
+    .cert-name { font-size: .875rem; font-weight: 500; color: var(--text); line-height: 1.4; }
+    .cert-date { font-size: .75rem; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    #contact { border-top: 1px solid var(--border); text-align: center; }
+    #contact .s-title { font-size: clamp(1.8rem, 4.5vw, 3rem); }
+    #contact .s-desc { margin: 0 auto 1.75rem; }
+    .contact-email {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: 1rem; font-weight: 500; color: var(--text);
+      padding: .7rem 1.4rem;
+      border: 1px solid var(--border); border-radius: var(--r);
+      margin-bottom: 2rem; transition: all var(--t);
+    }
+    .contact-email:hover { border-color: var(--accent); color: var(--accent); opacity: 1; }
+    .social-links { display: flex; justify-content: center; gap: 1.25rem; flex-wrap: wrap; }
+    .social-link {
+      display: flex; align-items: center; gap: .4rem;
+      color: var(--subtle); font-size: .9rem; transition: color var(--t);
+    }
+    .social-link:hover { color: var(--accent); opacity: 1; }
+    .social-link svg { width: 1rem; height: 1rem; fill: currentColor; }
+
+    /* ── FOOTER ── */
+    footer { border-top: 1px solid var(--border); padding: 1.75rem 0; text-align: center; }
+    footer p { font-family: var(--mono); font-size: .75rem; color: var(--muted); }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .about-grid { grid-template-columns: 1fr; }
+      .photo-wrap { max-width: 240px; margin: 0 auto; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .exp-item { grid-template-columns: 1fr; gap: .3rem; }
+      section { padding: 4rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav id="navbar">
+  <div class="container">
+    <a href="#hero" class="nav-logo">S<span>.</span>IL</a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#about"          data-i18n="nav.about">Sobre mí</a></li>
+        <li><a href="#skills"         data-i18n="nav.skills">Skills</a></li>
+        <li><a href="#projects"       data-i18n="nav.projects">Proyectos</a></li>
+        <li><a href="#experience"     data-i18n="nav.experience">Experiencia</a></li>
+        <li><a href="#certifications" data-i18n="nav.certs">Certificaciones</a></li>
+        <li><a href="#contact"        data-i18n="nav.contact">Contacto</a></li>
+      </ul>
+      <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+        <span id="langES" class="active">ES</span>
+        <span class="sep">|</span>
+        <span id="langEN">EN</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about"          data-i18n="nav.about">Sobre mí</a>
+  <a href="#skills"         data-i18n="nav.skills">Skills</a>
+  <a href="#projects"       data-i18n="nav.projects">Proyectos</a>
+  <a href="#experience"     data-i18n="nav.experience">Experiencia</a>
+  <a href="#certifications" data-i18n="nav.certs">Certificaciones</a>
+  <a href="#contact"        data-i18n="nav.contact">Contacto</a>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="container">
+    <p class="hero-eyebrow" data-i18n="hero.greeting">Hola, soy</p>
+    <h1 class="hero-name">Sara Iglesias<br>de Lucas</h1>
+    <p class="hero-role">
+      <span class="typed" id="typed-text"></span><span class="cursor"></span>
+    </p>
+    <p class="hero-pitch" data-i18n="hero.pitch">
+      Desarrolladora full stack y game developer, graduada en Diseño de Videojuegos por la UBU.
+      Apasionada por construir productos reales — desde el backend hasta la experiencia de juego.
+    </p>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn btn-primary" data-i18n="hero.cta_projects">Ver proyectos</a>
+      <a href="#contact"  class="btn btn-ghost"   data-i18n="hero.cta_contact">Contacto</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="container">
+    <div class="reveal">
+      <p class="s-label" data-i18n="about.label">01 — Sobre mí</p>
+      <h2 class="s-title" data-i18n="about.title">Un poco sobre quien soy</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p data-i18n="about.p1">
+          Soy Sara, desarrolladora de <strong>Segovia</strong> recién graduada en
+          <strong>Diseño de Videojuegos</strong> por la Universidad de Burgos (2021–2026).
+          Aunque el grado lo abarca todo, mi camino fue directo a la programación:
+          me enganché a los sistemas, la lógica y ese momento en que el código hace algo real.
+        </p>
+        <p data-i18n="about.p2">
+          Tengo experiencia práctica en desarrollo <strong>full stack</strong> —
+          actualmente en prácticas en Dealers League, donde construí la app
+          <strong>MascotaRed</strong> en .NET MAUI con backend SQL Server.
+          También desarrollo <strong>videojuegos en Unity</strong> y trabajo con clientes de forma independiente.
+        </p>
+        <p data-i18n="about.p3">
+          Certificada por <strong>Anthropic, Google e IE University</strong> en IA y ciencia de datos.
+          Inglés B2 con C1 en curso. No me asusta el código difícil ni empezar desde cero —
+          me gustan los problemas que requieren pensar.
+        </p>
+      </div>
+      <div class="photo-wrap reveal">
+        <div class="photo-frame">
+          <!--
+            PARA AÑADIR TU FOTO:
+            1. Pon tu imagen en la carpeta portfolio/ (ej. foto.jpg)
+            2. Sustituye el bloque .photo-placeholder por:
+               <img src="foto.jpg" alt="Sara Iglesias de Lucas">
+          -->
+          <img src="foto.png" alt="Sara Iglesias de Lucas">
+        </div>
+        <div class="photo-accent"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SKILLS ═══ -->
+<section id="skills">
+  <div class="container">
+    <div class="reveal">
+      <p class="s-label" data-i18n="skills.label">02 — Skills</p>
+      <h2 class="s-title" data-i18n="skills.title">Tecnologías que manejo</h2>
+      <p class="s-desc" data-i18n="skills.desc">Herramientas usadas en proyectos reales durante el grado y por cuenta propia.</p>
+    </div>
+    <div class="skills-grid reveal">
+      <div class="skill-card">
+        <p class="skill-card-title" data-i18n="skills.g1">Lenguajes</p>
+        <div class="tags">
+          <span class="tag">C#</span>
+          <span class="tag">C</span>
+          <span class="tag">Python</span>
+          <span class="tag">Java</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">XAML</span>
+          <span class="tag">Processing</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <p class="skill-card-title" data-i18n="skills.g2">Motores y Frameworks</p>
+        <div class="tags">
+          <span class="tag">Unity</span>
+          <span class="tag">Unreal Engine 5</span>
+          <span class="tag">.NET MAUI</span>
+          <span class="tag">React</span>
+          <span class="tag">PHP &amp; MVC</span>
+          <span class="tag">SQL Server</span>
+          <span class="tag">Git</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <p class="skill-card-title" data-i18n="skills.g3">IA y Datos</p>
+        <div class="tags">
+          <span class="tag">Claude Code</span>
+          <span class="tag">Agentic AI</span>
+          <span class="tag">Prompt Engineering</span>
+          <span class="tag">Generative AI</span>
+          <span class="tag">Data Science</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <p class="skill-card-title" data-i18n="skills.g4">Diseño y Otros</p>
+        <div class="tags">
+          <span class="tag">UI/UX</span>
+          <span class="tag">Game Design</span>
+          <span class="tag">UI Kits</span>
+          <span class="tag">ERD</span>
+          <span class="tag">Full SSL/TLS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROJECTS ═══ -->
+<section id="projects">
+  <div class="container">
+    <div class="reveal">
+      <p class="s-label" data-i18n="projects.label">03 — Proyectos</p>
+      <h2 class="s-title" data-i18n="projects.title">Lo que he construido</h2>
+      <p class="s-desc" data-i18n="projects.desc">Proyectos académicos, profesionales y de game jam. Todo con código real.</p>
+    </div>
+    <div class="projects-grid">
+
+      <!-- MascotaRed -->
+      <div class="proj-card reveal">
+        <div class="proj-header">
+          <div class="proj-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+            </svg>
+          </div>
+          <a href="https://mascotared.com" class="proj-ext-link" target="_blank" rel="noopener" title="mascotared.com">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+          </a>
+        </div>
+        <h3 class="proj-title">MascotaRed</h3>
+        <p class="proj-desc" data-i18n="proj.mascota_desc">
+          App móvil de cuidado de mascotas en .NET MAUI con backend SQL Server.
+          Web corporativa con arquitectura Full SSL/TLS. Diseño de ERD,
+          flujos críticos y entrega de MVP funcional durante las prácticas en Dealers League.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">.NET MAUI</span>
+          <span class="proj-tag">SQL Server</span>
+          <span class="proj-tag">Full Stack</span>
+          <span class="proj-tag">UI/UX</span>
+        </div>
+      </div>
+
+      <!-- Panificadora -->
+      <div class="proj-card reveal">
+        <div class="proj-header">
+          <div class="proj-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 11l19-9-9 19-2-8-8-2z"/>
+            </svg>
+          </div>
+          <a href="https://delamataescobarpanificadora.es/" class="proj-ext-link" target="_blank" rel="noopener" title="Ver web">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+          </a>
+        </div>
+        <h3 class="proj-title" data-i18n="proj.pani_title">Web Corporativa — Panificadora</h3>
+        <p class="proj-desc" data-i18n="proj.pani_desc">
+          Diseño y desarrollo completo de la web para una panificadora de Segovia. Identidad visual propia, tipografía personalizada y optimización para negocio local.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">HTML</span>
+          <span class="proj-tag">CSS</span>
+          <span class="proj-tag">JavaScript</span>
+          <span class="proj-tag" data-i18n="proj.pani_tag">Encargo</span>
+        </div>
+      </div>
+
+      <!-- SCALIX -->
+      <div class="proj-card reveal">
+        <div class="proj-header">
+          <div class="proj-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+              <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+            </svg>
+          </div>
+          <div style="display:flex;align-items:center;gap:.5rem">
+            <a href="https://saraidl14.github.io/SCALIX.github.io/" class="proj-ext-link" target="_blank" rel="noopener" title="Ver web">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
+            </a>
+            <span class="proj-badge" data-i18n="proj.scalix_badge">Web · 2024–2025</span>
+          </div>
+        </div>
+        <h3 class="proj-title">SCALIX</h3>
+        <p class="proj-desc" data-i18n="proj.scalix_desc">
+          E-commerce de mascotas exóticas con catálogo de productos, carrito de compra, registro de usuarios y sistema de login. Proyecto frontend completo en HTML, CSS y JavaScript vanilla.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">HTML</span>
+          <span class="proj-tag">CSS</span>
+          <span class="proj-tag">JavaScript</span>
+          <span class="proj-tag">E-commerce</span>
+        </div>
+      </div>
+
+      <!-- FitCor -->
+      <div class="proj-card reveal">
+        <div class="proj-header">
+          <div class="proj-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+              <line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>
+            </svg>
+          </div>
+          <span class="proj-badge" data-i18n="proj.fitcor_badge">React · 2024–2025</span>
+        </div>
+        <h3 class="proj-title">FitCor</h3>
+        <p class="proj-desc" data-i18n="proj.fitcor_desc">
+          App de gimnasio tipo Basic Fit con login, perfil de usuario, creación de rutinas, seguimiento de progreso, temporizador y sistema de 12 insignias/logros. Frontend en React con backend propio y MongoDB.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">React</span>
+          <span class="proj-tag">Node.js</span>
+          <span class="proj-tag">MongoDB</span>
+          <span class="proj-tag">CRUD</span>
+          <span class="proj-tag">Auth</span>
+        </div>
+      </div>
+
+      <!-- TFG -->
+      <div class="proj-card reveal">
+        <div class="proj-header">
+          <div class="proj-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/>
+              <path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/>
+            </svg>
+          </div>
+          <div style="display:flex;align-items:center;gap:.5rem">
+            <a href="https://saraidl14.itch.io/re-lived" class="proj-ext-link" target="_blank" rel="noopener" title="itch.io">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
+            </a>
+            <span class="proj-badge" data-i18n="proj.tfg_badge">TFG · 2025–2026</span>
+          </div>
+        </div>
+        <h3 class="proj-title" data-i18n="proj.tfg_title">IA para Dificultad Dinámica Adaptativa</h3>
+        <p class="proj-desc" data-i18n="proj.tfg_desc">
+          Dungeon crawler 2D en Unity con sistema de IA que ajusta la dificultad en tiempo real
+          según el comportamiento del jugador. Generación procedimental de mazmorras y
+          ajuste dinámico de iluminación con URP 2D Light.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">Unity</span>
+          <span class="proj-tag">C#</span>
+          <span class="proj-tag">IA</span>
+          <span class="proj-tag">URP 2D</span>
+          <span class="proj-tag">Procedimental</span>
+        </div>
+      </div>
+
+      <!-- Crippled Wheels -->
+      <div class="proj-card reveal">
+        <div class="proj-header">
+          <div class="proj-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="6" y1="11" x2="10" y2="11"/><line x1="8" y1="9" x2="8" y2="13"/>
+              <line x1="15" y1="12" x2="15.01" y2="12"/><line x1="17" y1="10" x2="17.01" y2="10"/>
+              <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.017.152-.026.3-.036.448C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258A4 4 0 0 0 17.32 5z"/>
+            </svg>
+          </div>
+          <div style="display:flex;align-items:center;gap:.5rem">
+            <a href="https://artlak04.itch.io/crippled-wheels" class="proj-ext-link" target="_blank" rel="noopener" title="itch.io">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+              </svg>
+            </a>
+            <span class="proj-badge" data-i18n="proj.crippled_badge">Game Jam Winner</span>
+          </div>
+        </div>
+        <h3 class="proj-title">Crippled Wheels</h3>
+        <p class="proj-desc" data-i18n="proj.crippled_desc">
+          Juego de carreras en Unity desarrollado en equipo de 5 para la Insanity Jam (UBU).
+          Ganador de la categoría INSANO. Rol principal como programadora del equipo.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">Unity</span>
+          <span class="proj-tag">C#</span>
+          <span class="proj-tag">Game Jam</span>
+          <span class="proj-tag">Team</span>
+        </div>
+      </div>
+
+      <!-- SOULRIOD -->
+      <div class="proj-card reveal">
+        <div class="proj-header">
+          <div class="proj-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/>
+              <line x1="13" y1="19" x2="19" y2="13"/>
+              <line x1="16" y1="16" x2="20" y2="20"/>
+              <line x1="19" y1="21" x2="21" y2="19"/>
+            </svg>
+          </div>
+          <span class="proj-badge" data-i18n="proj.soul_badge">2024 · UBU</span>
+        </div>
+        <h3 class="proj-title">SOULRIOD</h3>
+        <p class="proj-desc" data-i18n="proj.soul_desc">
+          RPG de acción y aventura en tercera persona en Unity 3D con C#.
+          Programación completa del juego: mecánicas de combate, IA de enemigos y modelos 3D.
+        </p>
+        <div class="proj-tags">
+          <span class="proj-tag">Unity 3D</span>
+          <span class="proj-tag">C#</span>
+          <span class="proj-tag">Enemy AI</span>
+          <span class="proj-tag">3D</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EXPERIENCE ═══ -->
+<section id="experience">
+  <div class="container">
+    <div class="reveal">
+      <p class="s-label" data-i18n="exp.label">04 — Experiencia</p>
+      <h2 class="s-title" data-i18n="exp.title">Trayectoria profesional</h2>
+    </div>
+    <div class="exp-list reveal">
+
+      <div class="exp-item">
+        <div class="exp-date" data-i18n="exp.intern_date">Feb. 2026 – Actualidad</div>
+        <div class="exp-content">
+          <p class="exp-role" data-i18n="exp.intern_role">Full Stack Developer Intern</p>
+          <p class="exp-company">Dealers League S.L. · Segovia</p>
+          <ul class="exp-bullets">
+            <li data-i18n="exp.intern_b1">Desarrollo frontend y backend en .NET MAUI para la app MascotaRed.</li>
+            <li data-i18n="exp.intern_b2">Diseño de ERD y scripts SQL para gestión de usuarios, mascotas y servicios.</li>
+            <li data-i18n="exp.intern_b3">Definición de flujos críticos y entrega de MVP funcional.</li>
+            <li data-i18n="exp.intern_b4">Desarrollo web de mascotared.com con arquitectura Full SSL/TLS.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-date" data-i18n="exp.freelance_date">Feb. 2025 – Actualidad</div>
+        <div class="exp-content">
+          <p class="exp-role" data-i18n="exp.freelance_role">Freelance — Desarrollo Web y Videojuegos</p>
+          <p class="exp-company" data-i18n="exp.freelance_co">Profesional Independiente</p>
+          <ul class="exp-bullets">
+            <li data-i18n="exp.freelance_b1">Diseño y desarrollo de páginas web y videojuegos a medida para clientes particulares.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-date" data-i18n="exp.teacher_date">Dic. 2024 – Actualidad</div>
+        <div class="exp-content">
+          <p class="exp-role" data-i18n="exp.teacher_role">Profesora de Desarrollo y Diseño Web</p>
+          <p class="exp-company" data-i18n="exp.teacher_co">Actividad independiente</p>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div class="exp-date" data-i18n="exp.judo_date">Ago. 2021 – Actualidad</div>
+        <div class="exp-content">
+          <p class="exp-role" data-i18n="exp.judo_role">Monitor &amp; Árbitro Autonómico de Judo</p>
+          <p class="exp-company">Federación de Castilla y León de Judo · Valladolid</p>
+          <ul class="exp-bullets">
+            <li data-i18n="exp.judo_b1">Arbitraje en competiciones oficiales bajo reglamento FEJYDA/IJF.</li>
+            <li data-i18n="exp.judo_b2">Gestión disciplinaria y toma de decisiones bajo presión en tiempo real.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CERTIFICATIONS ═══ -->
+<section id="certifications">
+  <div class="container">
+    <div class="reveal">
+      <p class="s-label" data-i18n="certs.label">05 — Certificaciones</p>
+      <h2 class="s-title" data-i18n="certs.title">Formación continua</h2>
+    </div>
+    <div class="certs-grid reveal">
+      <div class="cert-card">
+        <p class="cert-issuer">Anthropic</p>
+        <p class="cert-name">Claude Code in Action</p>
+        <p class="cert-date">Mar. 2026</p>
+      </div>
+      <div class="cert-card">
+        <p class="cert-issuer">IE University / Santander</p>
+        <p class="cert-name" data-i18n="cert.ds">Introducción a la Ciencia de Datos</p>
+        <p class="cert-date">Feb. 2026</p>
+      </div>
+      <div class="cert-card">
+        <p class="cert-issuer">Google / Santander</p>
+        <p class="cert-name" data-i18n="cert.gemini">Domina la IA con Gemini</p>
+        <p class="cert-date">Ene. 2026</p>
+      </div>
+      <div class="cert-card">
+        <p class="cert-issuer">Santander Open Academy</p>
+        <p class="cert-name">Python</p>
+        <p class="cert-date">Ene. 2026</p>
+      </div>
+      <div class="cert-card">
+        <p class="cert-issuer">Udemy</p>
+        <p class="cert-name" data-i18n="cert.php">PHP &amp; MVC: Proyectos Web Desde Cero</p>
+        <p class="cert-date">Nov. 2023</p>
+      </div>
+      <div class="cert-card">
+        <p class="cert-issuer">Udemy</p>
+        <p class="cert-name" data-i18n="cert.unity">Unity 2D Plataformas — Avanzado</p>
+        <p class="cert-date">Nov. 2023</p>
+      </div>
+      <div class="cert-card">
+        <p class="cert-issuer">Udemy</p>
+        <p class="cert-name" data-i18n="cert.java">Java Complete Course</p>
+        <p class="cert-date">Abr. 2023</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="container">
+    <div class="reveal">
+      <p class="s-label" data-i18n="contact.label">06 — Contacto</p>
+      <h2 class="s-title" data-i18n="contact.title">¿Hablamos?</h2>
+      <p class="s-desc" data-i18n="contact.desc">
+        Abierta a oportunidades laborales, colaboraciones o una buena conversación sobre código o videojuegos.
+      </p>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:.75rem;margin-bottom:2rem">
+        <a href="mailto:saraiglesiasdelucas@gmail.com" class="contact-email" style="margin-bottom:0">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <rect width="20" height="16" x="2" y="4" rx="2"/>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+          <span>saraiglesiasdelucas@gmail.com</span>
+          <span style="font-size:.72rem;font-family:var(--mono);color:var(--muted);margin-left:.25rem" data-i18n="contact.label_work">(empleo)</span>
+        </a>
+        <a href="mailto:saraiglesiasdeveloper@gmail.com" class="contact-email" style="margin-bottom:0">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+            <rect width="20" height="16" x="2" y="4" rx="2"/>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+          <span>saraiglesiasdeveloper@gmail.com</span>
+          <span style="font-size:.72rem;font-family:var(--mono);color:var(--muted);margin-left:.25rem" data-i18n="contact.label_dev">(desarrollo)</span>
+        </a>
+      </div>
+      <div class="social-links">
+        <a href="https://github.com/saraidl14" class="social-link" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          GitHub
+        </a>
+        <a href="https://linkedin.com/in/sara-iglesias-de-lucas-a85a47242" class="social-link" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p data-i18n="footer.text">Diseñado y construido por Sara Iglesias de Lucas · 2026</p>
+  </div>
+</footer>
+
+<script>
+// ═══ TRANSLATIONS ════════════════════════════════════════════════════════════
+const t = {
+  es: {
+    'nav.about':    'Sobre mí',
+    'nav.skills':   'Skills',
+    'nav.projects': 'Proyectos',
+    'nav.experience': 'Experiencia',
+    'nav.certs':    'Certificaciones',
+    'nav.contact':  'Contacto',
+
+    'hero.greeting':     'Hola, soy',
+    'hero.pitch':        'Desarrolladora full stack y game developer, graduada en Diseño de Videojuegos por la UBU. Apasionada por construir productos reales — desde el backend hasta la experiencia de juego.',
+    'hero.cta_projects': 'Ver proyectos',
+    'hero.cta_contact':  'Contacto',
+
+    'about.label':      '01 — Sobre mí',
+    'about.title':      'Un poco sobre quien soy',
+    'about.p1':         'Soy Sara, desarrolladora de <strong>Segovia</strong> recién graduada en <strong>Diseño de Videojuegos</strong> por la Universidad de Burgos (2021–2026). Aunque el grado lo abarca todo, mi camino fue directo a la programación: me enganché a los sistemas, la lógica y ese momento en que el código hace algo real.',
+    'about.p2':         'Tengo experiencia práctica en desarrollo <strong>full stack</strong> — actualmente en prácticas en Dealers League, donde construí la app <strong>MascotaRed</strong> en .NET MAUI con backend SQL Server. También desarrollo <strong>videojuegos en Unity</strong> y trabajo con clientes de forma independiente.',
+    'about.p3':         'Certificada por <strong>Anthropic, Google e IE University</strong> en IA y ciencia de datos. Inglés B2 con C1 en curso. No me asusta el código difícil ni empezar desde cero — me gustan los problemas que requieren pensar.',
+    'about.photo_hint': 'tu foto aquí',
+
+    'skills.label': '02 — Skills',
+    'skills.title': 'Tecnologías que manejo',
+    'skills.desc':  'Herramientas usadas en proyectos reales durante el grado y por cuenta propia.',
+    'skills.g1': 'Lenguajes',
+    'skills.g2': 'Motores y Frameworks',
+    'skills.g3': 'IA y Datos',
+    'skills.g4': 'Diseño y Otros',
+
+    'projects.label': '03 — Proyectos',
+    'projects.title': 'Lo que he construido',
+    'projects.desc':  'Proyectos académicos, profesionales y de game jam. Todo con código real.',
+    'proj.tfg_badge':    'TFG · 2025–2026',
+    'proj.tfg_title':    'IA para Dificultad Dinámica Adaptativa',
+    'proj.tfg_desc':     'Dungeon crawler 2D en Unity con sistema de IA que ajusta la dificultad en tiempo real según el comportamiento del jugador. Generación procedimental de mazmorras y ajuste dinámico de iluminación con URP 2D Light.',
+    'proj.mascota_desc': 'App móvil de cuidado de mascotas en .NET MAUI con backend SQL Server. Web corporativa con arquitectura Full SSL/TLS. Diseño de ERD, flujos críticos y entrega de MVP funcional durante las prácticas en Dealers League.',
+    'proj.crippled_badge': 'Game Jam Winner',
+    'proj.crippled_desc':  'Juego de carreras en Unity desarrollado en equipo de 5 para la Insanity Jam (UBU). Ganador de la categoría INSANO. Rol principal como programadora del equipo.',
+    'proj.fitcor_badge': 'React · 2024–2025',
+    'proj.fitcor_desc':  'App de gimnasio tipo Basic Fit con login, perfil de usuario, creación de rutinas, seguimiento de progreso, temporizador y sistema de 12 insignias/logros. Frontend en React con backend propio y MongoDB.',
+    'proj.scalix_badge': 'Web · 2024–2025',
+    'proj.scalix_desc':  'E-commerce de mascotas exóticas con catálogo de productos, carrito de compra, registro de usuarios y sistema de login. Proyecto frontend completo en HTML, CSS y JavaScript vanilla.',
+    'proj.pani_title': 'Web Corporativa — Panificadora',
+    'proj.pani_desc':  'Diseño y desarrollo completo de la web para una panificadora de Segovia. Identidad visual propia, tipografía personalizada y optimización para negocio local.',
+    'proj.pani_tag':   'Encargo',
+    'proj.soul_badge': '2024 · UBU',
+    'proj.soul_desc':  'RPG de acción y aventura en tercera persona en Unity 3D con C#. Programación completa del juego: mecánicas de combate, IA de enemigos y modelos 3D.',
+
+    'exp.label': '04 — Experiencia',
+    'exp.title': 'Trayectoria profesional',
+    'exp.intern_date':   'Feb. 2026 – Actualidad',
+    'exp.intern_role':   'Full Stack Developer Intern',
+    'exp.intern_b1':     'Desarrollo frontend y backend en .NET MAUI para la app MascotaRed.',
+    'exp.intern_b2':     'Diseño de ERD y scripts SQL para gestión de usuarios, mascotas y servicios.',
+    'exp.intern_b3':     'Definición de flujos críticos y entrega de MVP funcional.',
+    'exp.intern_b4':     'Desarrollo web de mascotared.com con arquitectura Full SSL/TLS.',
+    'exp.freelance_date': 'Feb. 2025 – Actualidad',
+    'exp.freelance_role': 'Freelance — Desarrollo Web y Videojuegos',
+    'exp.freelance_co':   'Profesional Independiente',
+    'exp.freelance_b1':   'Diseño y desarrollo de páginas web y videojuegos a medida para clientes particulares.',
+    'exp.teacher_date': 'Dic. 2024 – Actualidad',
+    'exp.teacher_role': 'Profesora de Desarrollo y Diseño Web',
+    'exp.teacher_co':   'Actividad independiente',
+    'exp.judo_date': 'Ago. 2021 – Actualidad',
+    'exp.judo_role': 'Monitor & Árbitro Autonómico de Judo',
+    'exp.judo_b1':   'Arbitraje en competiciones oficiales bajo reglamento FEJYDA/IJF.',
+    'exp.judo_b2':   'Gestión disciplinaria y toma de decisiones bajo presión en tiempo real.',
+
+    'certs.label': '05 — Certificaciones',
+    'certs.title': 'Formación continua',
+    'cert.ds':     'Introducción a la Ciencia de Datos',
+    'cert.gemini': 'Domina la IA con Gemini',
+    'cert.php':    'PHP & MVC: Proyectos Web Desde Cero',
+    'cert.unity':  'Unity 2D Plataformas — Avanzado',
+    'cert.java':   'Java Complete Course',
+
+    'contact.label':      '06 — Contacto',
+    'contact.title':      '¿Hablamos?',
+    'contact.desc':       'Abierta a oportunidades laborales, colaboraciones o una buena conversación sobre código o videojuegos.',
+    'contact.label_work': '(empleo)',
+    'contact.label_dev':  '(desarrollo)',
+
+    'footer.text': 'Diseñado y construido por Sara Iglesias de Lucas · 2026',
+  },
+
+  en: {
+    'nav.about':    'About',
+    'nav.skills':   'Skills',
+    'nav.projects': 'Projects',
+    'nav.experience': 'Experience',
+    'nav.certs':    'Certifications',
+    'nav.contact':  'Contact',
+
+    'hero.greeting':     "Hi, I'm",
+    'hero.pitch':        'Full stack developer and game developer, graduated in Video Game Design from UBU. Passionate about building real products — from the backend to the gameplay experience.',
+    'hero.cta_projects': 'View projects',
+    'hero.cta_contact':  'Contact',
+
+    'about.label':      '01 — About me',
+    'about.title':      'A little about who I am',
+    'about.p1':         "I'm Sara, a developer from <strong>Segovia, Spain</strong>, recently graduated in <strong>Video Game Design</strong> from the University of Burgos (2021–2026). Although the degree covers everything, I gravitated toward programming from day one — I got hooked on systems, logic, and that moment when code actually does something real.",
+    'about.p2':         "I have hands-on experience in <strong>full stack development</strong> — currently interning at Dealers League, where I built the <strong>MascotaRed</strong> app in .NET MAUI with a SQL Server backend. I also build <strong>Unity games</strong> and take on freelance clients.",
+    'about.p3':         "Certified by <strong>Anthropic, Google, and IE University</strong> in AI and data science. B2 English (C1 in progress). I'm not afraid of hard code or starting from scratch — I enjoy problems that require real thinking.",
+    'about.photo_hint': 'your photo here',
+
+    'skills.label': '02 — Skills',
+    'skills.title': 'Technologies I work with',
+    'skills.desc':  'Tools I have used in real projects during my degree and on my own.',
+    'skills.g1': 'Languages',
+    'skills.g2': 'Engines & Frameworks',
+    'skills.g3': 'AI & Data',
+    'skills.g4': 'Design & Other',
+
+    'projects.label': '03 — Projects',
+    'projects.title': "What I've built",
+    'projects.desc':  'Academic, professional, and game jam projects. All with real code.',
+    'proj.tfg_badge':    'Thesis · 2025–2026',
+    'proj.tfg_title':    'AI for Adaptive Dynamic Difficulty',
+    'proj.tfg_desc':     '2D dungeon crawler in Unity with an AI system that adjusts difficulty in real time based on player behavior. Procedural dungeon generation and dynamic lighting with URP 2D Light.',
+    'proj.mascota_desc': 'Pet care mobile app built in .NET MAUI with SQL Server backend. Corporate website with Full SSL/TLS architecture. ERD design, critical user flows, and MVP delivery during internship at Dealers League.',
+    'proj.crippled_badge': 'Game Jam Winner',
+    'proj.crippled_desc':  'Racing game developed in Unity as part of a 5-person team for Insanity Jam (UBU). Winner of the INSANO category. Lead programmer role.',
+    'proj.fitcor_badge': 'React · 2024–2025',
+    'proj.fitcor_desc':  'Gym app inspired by Basic Fit with login, user profile, routine builder, progress tracking, workout timer and a 12-badge achievement system. React frontend with custom Node.js backend and MongoDB.',
+    'proj.scalix_badge': 'Web · 2024–2025',
+    'proj.scalix_desc':  'Exotic pet e-commerce with product catalogue, shopping cart, user registration and login system. Full frontend project in HTML, CSS and vanilla JavaScript.',
+    'proj.pani_title': 'Corporate Website — Bakery',
+    'proj.pani_desc':  'Full design and development of a website for a bakery in Segovia. Custom visual identity, bespoke typography and local business optimisation.',
+    'proj.pani_tag':   'Client work',
+    'proj.soul_badge': '2024 · UBU',
+    'proj.soul_desc':  'Third-person action RPG in Unity 3D with C#. Full game programming: combat mechanics, enemy AI, and 3D models.',
+
+    'exp.label': '04 — Experience',
+    'exp.title': 'Professional background',
+    'exp.intern_date':   'Feb. 2026 – Present',
+    'exp.intern_role':   'Full Stack Developer Intern',
+    'exp.intern_b1':     'Frontend and backend development in .NET MAUI for the MascotaRed app.',
+    'exp.intern_b2':     'ERD design and SQL scripts for user, pet, and service management.',
+    'exp.intern_b3':     'Definition of critical flows and delivery of a functional MVP.',
+    'exp.intern_b4':     'Web development of mascotared.com with Full SSL/TLS architecture.',
+    'exp.freelance_date': 'Feb. 2025 – Present',
+    'exp.freelance_role': 'Freelance — Web & Game Development',
+    'exp.freelance_co':   'Self-employed',
+    'exp.freelance_b1':   'Custom web and game development for individual clients.',
+    'exp.teacher_date': 'Dec. 2024 – Present',
+    'exp.teacher_role': 'Web Development & Design Instructor',
+    'exp.teacher_co':   'Independent activity',
+    'exp.judo_date': 'Aug. 2021 – Present',
+    'exp.judo_role': 'Judo Coach & Regional Referee',
+    'exp.judo_b1':   'Officiating at regional and provincial competitions under FEJYDA/IJF rules.',
+    'exp.judo_b2':   'Disciplinary management and real-time decision-making under pressure.',
+
+    'certs.label': '05 — Certifications',
+    'certs.title': 'Continuous learning',
+    'cert.ds':     'Introduction to Data Science',
+    'cert.gemini': 'Master AI with Gemini',
+    'cert.php':    'PHP & MVC: Build Web Projects from Scratch',
+    'cert.unity':  'Unity 2D Platformer — Advanced',
+    'cert.java':   'Java Complete Course',
+
+    'contact.label':      '06 — Contact',
+    'contact.title':      "Let's talk",
+    'contact.desc':       'Open to job opportunities, collaborations, or a good conversation about code or video games.',
+    'contact.label_work': '(work)',
+    'contact.label_dev':  '(dev)',
+
+    'footer.text': 'Designed and built by Sara Iglesias de Lucas · 2026',
+  }
+};
+
+// ═══ LANGUAGE SWITCHER ═══════════════════════════════════════════════════════
+let lang = 'es';
+
+function applyLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  document.getElementById('langES').classList.toggle('active', l === 'es');
+  document.getElementById('langEN').classList.toggle('active', l === 'en');
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[l][key] !== undefined) el.innerHTML = t[l][key];
+  });
+  resetTypewriter();
+}
+
+document.getElementById('langToggle').addEventListener('click', () => {
+  applyLang(lang === 'es' ? 'en' : 'es');
+});
+
+// ═══ TYPEWRITER ══════════════════════════════════════════════════════════════
+const roles = {
+  es: ['Full Stack Developer', 'Game Developer', 'Diseñadora de Videojuegos', 'Freelancer'],
+  en: ['Full Stack Developer', 'Game Developer', 'Video Game Designer',       'Freelancer'],
+};
+
+let ri = 0, ci = 0, deleting = false, timer = null;
+const typedEl = document.getElementById('typed-text');
+
+function tick() {
+  const arr = roles[lang];
+  const word = arr[ri % arr.length];
+  if (!deleting) {
+    typedEl.textContent = word.slice(0, ++ci);
+    if (ci === word.length) { deleting = true; timer = setTimeout(tick, 2200); return; }
+  } else {
+    typedEl.textContent = word.slice(0, --ci);
+    if (ci === 0) { deleting = false; ri++; }
+  }
+  timer = setTimeout(tick, deleting ? 55 : 85);
+}
+
+function resetTypewriter() {
+  clearTimeout(timer);
+  ci = 0; deleting = false;
+  typedEl.textContent = '';
+  tick();
+}
+
+tick();
+
+// ═══ STICKY NAV ══════════════════════════════════════════════════════════════
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 20);
+}, { passive: true });
+
+// ═══ MOBILE MENU ═════════════════════════════════════════════════════════════
+const hamburger   = document.getElementById('hamburger');
+const mobileMenu  = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+// ═══ SCROLL REVEAL ═══════════════════════════════════════════════════════════
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
