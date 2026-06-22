@@ -1,6 +1,4 @@
-# Línea 1 y 2 de tu archivo YAML aquí...
-seccion_readme: |
-  ---
+
 
   ## Author & Contact / Autor y Contacto
 
